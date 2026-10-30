@@ -3,12 +3,6 @@
 
 An AI-powered Google Maps assistant that helps you plan amazing road trips and explore the world with intelligent route planning, location discovery, and personalized travel recommendations.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python Version](https://img.shields.io/badge/python-3.11%2B-blue)](https://www.python.org/downloads/)
-[![Next.js](https://img.shields.io/badge/Next.js-14.0-black)](https://nextjs.org/)
-[![Google ADK](https://img.shields.io/badge/Google%20ADK-Agents-4285F4)](https://github.com/google/agent-development-kit)
-[![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/Yash-Kavaiya/GMap-Buddy/issues)
-
 ## 🌟 Overview
 
 Google Maps AI is a powerful tool designed to simplify and enhance Google Maps integration in your applications. Whether you're building location-based services, route optimization systems, or geographic data visualization tools, Google Maps AI provides the essential features you need.
@@ -18,14 +12,6 @@ Google Maps AI is an intelligent road trip planning assistant powered by Google'
 ![GMap-Buddy UI](Images/UI.png)
 *Modern and intuitive chat interface for seamless trip planning*
 
-## 🔗 Links & Resources
-
-### 🏆 Project Showcase
-- **Devpost**: [Celebrating Google Maps](https://devpost.com/software/celebrating-google-maps) - Our project submission showcasing the capabilities and features
-
-### 👥 Contributors & Team
-- **Yash Kavaiya**: [GitHub](https://github.com/Yash-Kavaiya) | [LinkedIn](https://www.linkedin.com/in/yashkavaiya/)
-- **Vinod Kumar Konkal**: [LinkedIn](https://www.linkedin.com/in/vinod-kumar-konkal/) | [GitHub](https://github.com/Wiikay)
 
 ## ✨ Features
 
@@ -321,7 +307,7 @@ User Input → Next.js UI → FastAPI → Google ADK Agent → MCP Tools → Goo
 
 ## 🤝 Contributing
 
-We welcome contributions to make GMap-Buddy even better! Here's how you can help:
+We welcome contributions to make this  even better! Here's how you can help:
 
 ### Ways to Contribute
 
@@ -357,24 +343,6 @@ We welcome contributions to make GMap-Buddy even better! Here's how you can help
 - **Python**: Follow PEP 8 guidelines
 - **TypeScript/React**: Use ESLint and Prettier
 - **Commit Messages**: Use conventional commits format
-
-### Getting Help
-
-- 📫 **Issues**: [GitHub Issues](https://github.com/Yash-Kavaiya/GMap-Buddy/issues)
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/Yash-Kavaiya/GMap-Buddy/discussions)
-
-### Performance Tips
-
-- **API Optimization**: The MCP integration handles caching automatically
-- **Rate Limiting**: Google Maps APIs have rate limits - the agent respects these
-- **Memory Usage**: The Docker container is optimized for memory efficiency
-- **Scaling**: Use Cloud Run for automatic scaling based on traffic
-
-### 🆘 Get Help
-- 📋 **Issues**: [Report bugs or request features](https://github.com/Yash-Kavaiya/GMap-Buddy/issues)
-- 💬 **Discussions**: [Community discussions](https://github.com/Yash-Kavaiya/GMap-Buddy/discussions)
-- 📖 **Documentation**: [Wiki & Guides](https://github.com/Yash-Kavaiya/GMap-Buddy/wiki)
-
 
 
 
