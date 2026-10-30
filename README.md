@@ -9,8 +9,7 @@ Google Maps AI is a powerful tool designed to simplify and enhance Google Maps i
 
 Google Maps AI is an intelligent road trip planning assistant powered by Google's Agent Development Kit (ADK) and the Model Context Protocol (MCP). It combines the power of AI with Google Maps services to create personalized travel experiences, complete with route optimization, weather forecasts, accommodation suggestions, and local recommendations.
 
-![GMap-Buddy UI](Images/UI.png)
-*Modern and intuitive chat interface for seamless trip planning*
+
 
 
 ## ✨ Features
