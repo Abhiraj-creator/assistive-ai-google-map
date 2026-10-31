@@ -52,9 +52,10 @@ export async function POST(request: NextRequest) {
     console.error('Proxy error:', error);
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return NextResponse.json(
-      { error: `Failed to communicate with ADK server: ${errorMessage}` },
+      { error: `ADK server is unavailable: ${errorMessage}` },
       { 
-        status: 500,
+        // This is an upstream-service failure, not an error in the user's query.
+        status: 503,
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Methods': 'POST, OPTIONS',

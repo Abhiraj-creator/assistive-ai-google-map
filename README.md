@@ -103,16 +103,18 @@ docker-compose --profile dev up
 
 #### Option C: Local Development
 ```bash
-# Backend (ADK Agent)
-pip install -r requirements.txt
-export GOOGLE_MAPS_API_KEY="your_api_key_here"
-adk web
+# Backend (PowerShell; keep this terminal open)
+.\scripts\run-backend.ps1
 
 # Frontend (in separate terminal)
 cd adk-ui
 npm install
 npm run dev
 ```
+
+The backend listens on `http://127.0.0.1:8000`, which is the address the UI
+uses for queries. The script creates `.venv` and installs the backend packages
+on its first run. It requires a working Python 3.11+ installation (`py`).
 
 Your Google Maps AI will be available at `http://localhost:8080`
 
