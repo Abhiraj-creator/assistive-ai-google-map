@@ -12,13 +12,26 @@ $ErrorActionPreference = 'Stop'
 $projectRoot = Split-Path -Parent $PSScriptRoot
 $venvPath = Join-Path $projectRoot '.venv'
 $adk = Join-Path $venvPath 'Scripts\adk.exe'
+$backendPython = Join-Path $venvPath 'Scripts\python.exe'
+$requirements = Join-Path $projectRoot 'google_map_adk\requirements.txt'
 
-if (-not (Test-Path $adk)) {
-    $python = Get-Command py -ErrorAction SilentlyContinue
-    $pythonArgs = @('-3')
+$needsInstall = -not (Test-Path $adk)
+if (-not $needsInstall) {
+    $previousErrorAction = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    & $backendPython -c "from google.adk.models.lite_llm import LiteLlm" 2>$null | Out-Null
+    $needsInstall = $LASTEXITCODE -ne 0
+    $ErrorActionPreference = $previousErrorAction
+}
+
+if ($needsInstall) {
+    # Prefer the interpreter the user verified; the `py` launcher may point at
+    # an old Windows Store installation.
+    $python = Get-Command python -ErrorAction SilentlyContinue
+    $pythonArgs = @()
     if (-not $python) {
-        $python = Get-Command python -ErrorAction SilentlyContinue
-        $pythonArgs = @()
+        $python = Get-Command py -ErrorAction SilentlyContinue
+        $pythonArgs = @('-3')
     }
     if (-not $python) {
         throw 'Python 3.11+ is required. Install it from https://www.python.org/downloads/ and run this script again.'
@@ -26,7 +39,7 @@ if (-not (Test-Path $adk)) {
 
     $pythonPath = $python.Source
     & $pythonPath @pythonArgs -m venv $venvPath
-    & (Join-Path $venvPath 'Scripts\pip.exe') install -r (Join-Path $projectRoot 'google_map_adk\requirements.txt')
+    & (Join-Path $venvPath 'Scripts\pip.exe') install -r $requirements
 }
 
 Set-Location $projectRoot

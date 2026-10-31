@@ -1,5 +1,5 @@
 # Google Agent Development Kit
-google-adk
+google-adk[extensions]
 mcp>=1.24,<2
 python-dotenv
 
