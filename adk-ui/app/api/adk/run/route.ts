@@ -4,12 +4,11 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     
-    // Convert from UI format to ADK API format (camelCase to snake_case)
     const adkRequest = {
-      app_name: body.appName,
-      user_id: body.userId,
-      session_id: body.sessionId,
-      new_message: body.newMessage,
+      appName: body.appName,
+      userId: body.userId,
+      sessionId: body.sessionId,
+      newMessage: body.newMessage,
     };
 
     // First, ensure session exists

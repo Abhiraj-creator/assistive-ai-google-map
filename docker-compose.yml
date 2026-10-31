@@ -10,7 +10,7 @@ services:
       - PORT=8080
     volumes:
       # Mount source code for development (optional)
-      - ./google-map-adk:/app/google-map-adk:ro
+      - ./google_map_adk:/app/google_map_adk:ro
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
@@ -29,7 +29,7 @@ services:
       - PORT=8080
     volumes:
       # Mount source code for live development
-      - ./google-map-adk:/app/google-map-adk
+      - ./google_map_adk:/app/google_map_adk
       - ./adk-ui:/app/adk-ui
     restart: unless-stopped
     profiles:

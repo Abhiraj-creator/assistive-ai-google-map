@@ -22,7 +22,7 @@ export const SessionManager: React.FC<SessionManagerProps> = ({
   currentSession,
   isConnected,
 }) => {
-  const [appName, setAppName] = useState(currentSession?.appName || 'google-map-adk');
+  const [appName, setAppName] = useState(currentSession?.appName || 'google_map_adk');
   const [userId, setUserId] = useState(currentSession?.userId || 'user');
   const [sessionId, setSessionId] = useState(currentSession?.sessionId || 's_123');
 

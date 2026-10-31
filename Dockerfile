@@ -40,8 +40,8 @@ WORKDIR /app
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the google-map-adk directory (your ADK agent)
-COPY google-map-adk/ ./google-map-adk/
+# Copy the google_map_adk directory (your ADK agent)
+COPY google_map_adk/ ./google_map_adk/
 
 # Copy built frontend from previous stage
 COPY --from=frontend-builder /app/adk-ui/.next ./adk-ui/.next

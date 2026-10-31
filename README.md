@@ -173,7 +173,7 @@ GOOGLE_ADK_MODEL=gemini-2.0-flash  # AI model to use
 
 ```
 Google-Map-AI/
-├── 📁 google-map-adk/       # Python ADK agent
+├── 📁 google_map_adk/       # Python ADK agent
 │   ├── agent.py            # Google ADK AI agent configuration
 │   ├── prompt.py           # AI prompts and conversation flow
 │   └── __init__.py
