@@ -1,45 +1,49 @@
-# ./adk_agent_samples/mcp_agent/agent.py
 import os
+from pathlib import Path
+from dotenv import load_dotenv
 from google.adk.agents import LlmAgent
+from google.adk.models.lite_llm import LiteLlm
 from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset, StdioServerParameters
 from . import prompt
-# Retrieve the API key from an environment variable or directly insert it.
-# Using an environment variable is generally safer.
-# Ensure this environment variable is set in the terminal where you run 'adk web'.
-# Example: export GOOGLE_MAPS_API_KEY="YOUR_ACTUAL_KEY"
+
+# Load .env from the project root (one level up from this package)
+_root_env = Path(__file__).resolve().parent.parent / ".env"
+load_dotenv(dotenv_path=_root_env, override=False)
+
+# Retrieve API keys from environment variables
 google_maps_api_key = os.environ.get("GOOGLE_MAPS_API_KEY")
+groq_api_key = os.environ.get("GROQ_API_KEY")
 
 if not google_maps_api_key:
-    # Fallback or direct assignment for testing - NOT RECOMMENDED FOR PRODUCTION
-    google_maps_api_key = "YOUR_GOOGLE_MAPS_API_KEY_HERE" # Replace if not using env var
-    if google_maps_api_key == "YOUR_GOOGLE_MAPS_API_KEY_HERE":
-        print("WARNING: GOOGLE_MAPS_API_KEY is not set. Please set it as an environment variable or in the script.")
-        # You might want to raise an error or exit if the key is crucial and not found.
+    print("WARNING: GOOGLE_MAPS_API_KEY is not set.")
+
+if not groq_api_key:
+    print("WARNING: GROQ_API_KEY is not set.")
+else:
+    # LiteLlm needs GROQ_API_KEY in the environment for groq/ prefix models
+    os.environ["GROQ_API_KEY"] = groq_api_key
+
+# ADK v2.13: Use LiteLlm with the groq/ model prefix.
+# LiteLlm routes "groq/llama-3.3-70b-versatile" to Groq's API automatically.
+llm = LiteLlm(model="groq/llama-3.3-70b-versatile")
 
 root_agent = LlmAgent(
-    model='gemini-2.0-flash',
-    name='google_map_adk',
+    model=llm,
+    name="google_map_adk",
     instruction=prompt.instruction,
     tools=[
         MCPToolset(
             connection_params=StdioServerParameters(
-                command='npx',
+                command="npx",
                 args=[
                     "-y",
                     "@modelcontextprotocol/server-google-maps",
                 ],
-                # Pass the API key as an environment variable to the npx process
-                # This is how the MCP server for Google Maps expects the key.
+                # Pass the Google Maps API key to the MCP server process
                 env={
-                    "GOOGLE_MAPS_API_KEY": google_maps_api_key
-                }
+                    "GOOGLE_MAPS_API_KEY": google_maps_api_key or "",
+                },
             ),
-            # You can filter for specific Maps tools if needed:
-            # tool_filter=['get_directions', 'find_place_by_id']
         ),
-        
     ],
 )
-
-
-
