@@ -34,7 +34,8 @@ export default function Home() {
   const [currentSession, setCurrentSession] = useState<SessionConfig>({
     appName: 'google_map_adk',
     userId: 'user',
-    sessionId: newSessionId(),
+    // Replaced with a fresh ID on mount; keep the initializer deterministic for SSR.
+    sessionId: 's_123',
   });
   const [isConnected, setIsConnected] = useState(false);
   const [conversations, setConversations] = useState<Conversation[]>([]);

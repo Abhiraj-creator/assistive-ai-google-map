@@ -33,7 +33,35 @@ configured_model = (
 llm_model = configured_model if configured_model.startswith("groq/") else f"groq/{configured_model}"
 # GPT-OSS supports explicit reasoning effort on Groq. Do not pass the
 # unsupported history-filter options through LiteLLM.
-llm = LiteLlm(model=llm_model, reasoning_effort="low")
+
+
+class GroqLiteLlm(LiteLlm):
+    """Keep ADK's internal reasoning history out of Groq chat requests."""
+
+    async def generate_content_async(self, llm_request, stream=False):
+        sanitized_request = llm_request.model_copy(deep=False)
+        sanitized_request.contents = [
+            content.model_copy(
+                update={
+                    "parts": [
+                        part
+                        for part in (content.parts or [])
+                        if not (
+                            content.role in ("model", "assistant")
+                            and getattr(part, "thought", False)
+                        )
+                    ]
+                }
+            )
+            for content in llm_request.contents
+        ]
+        async for response in super().generate_content_async(
+            sanitized_request, stream=stream
+        ):
+            yield response
+
+
+llm = GroqLiteLlm(model=llm_model, reasoning_effort="low")
 5
 root_agent = LlmAgent(
     model=llm,
