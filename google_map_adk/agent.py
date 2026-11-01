@@ -23,10 +23,18 @@ else:
     # LiteLlm needs GROQ_API_KEY in the environment for groq/ prefix models
     os.environ["GROQ_API_KEY"] = groq_api_key
 
-# ADK v2.13: Use LiteLlm with the groq/ model prefix.
-# LiteLlm routes "groq/llama-3.3-70b-versatile" to Groq's API automatically.
-llm = LiteLlm(model="groq/llama-3.3-70b-versatile")
-
+# LiteLLM needs the Groq provider prefix. Keep the model configurable so a
+# retired Groq model does not remain hardcoded in the agent.
+configured_model = (
+    os.environ.get("GROQ_MODEL")
+    or os.environ.get("GOOGLE_ADK_MODEL")
+    or "openai/gpt-oss-120b"
+)
+llm_model = configured_model if configured_model.startswith("groq/") else f"groq/{configured_model}"
+# GPT-OSS supports explicit reasoning effort on Groq. Do not pass the
+# unsupported history-filter options through LiteLLM.
+llm = LiteLlm(model=llm_model, reasoning_effort="low")
+5
 root_agent = LlmAgent(
     model=llm,
     name="google_map_adk",

@@ -19,7 +19,7 @@ $needsInstall = -not (Test-Path $adk)
 if (-not $needsInstall) {
     $previousErrorAction = $ErrorActionPreference
     $ErrorActionPreference = 'Continue'
-    & $backendPython -c "from google.adk.models.lite_llm import LiteLlm" 2>$null | Out-Null
+    & $backendPython -c "import importlib.metadata as m; assert m.version('litellm') == '1.105.1'" 2>$null | Out-Null
     $needsInstall = $LASTEXITCODE -ne 0
     $ErrorActionPreference = $previousErrorAction
 }

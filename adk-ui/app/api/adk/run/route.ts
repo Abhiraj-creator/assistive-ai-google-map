@@ -13,13 +13,17 @@ export async function POST(request: NextRequest) {
 
     // First, ensure session exists
     try {
-      await fetch(`http://localhost:8000/apps/${body.appName}/users/${body.userId}/sessions/${body.sessionId}`, {
+      const sessionResponse = await fetch(`http://localhost:8000/apps/${body.appName}/users/${body.userId}/sessions/${body.sessionId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ state: {} }),
       });
+      // ADK returns 409 when a caller reuses an existing session; that is safe.
+      if (!sessionResponse.ok && sessionResponse.status !== 409) {
+        throw new Error(`Session creation failed with status ${sessionResponse.status}`);
+      }
     } catch (sessionError) {
       // Session might already exist, continue
       console.log('Session creation note:', sessionError);

@@ -26,13 +26,15 @@ interface SessionConfig {
   sessionId: string;
 }
 
+const newSessionId = () => `s_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+
 export default function Home() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [currentSession, setCurrentSession] = useState<SessionConfig>({
     appName: 'google_map_adk',
     userId: 'user',
-    sessionId: 's_123',
+    sessionId: newSessionId(),
   });
   const [isConnected, setIsConnected] = useState(false);
   const [conversations, setConversations] = useState<Conversation[]>([]);
@@ -93,6 +95,7 @@ export default function Home() {
     
     setConversations(prev => [newConversation, ...prev]);
     setCurrentConversation(newConversation.id);
+    setCurrentSession(prev => ({ ...prev, sessionId: newSessionId() }));
     setMessages([]);
   };
 
@@ -218,7 +221,14 @@ export default function Home() {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        let details = `HTTP error! status: ${response.status}`;
+        try {
+          const errorBody = await response.json();
+          if (errorBody?.error) details = errorBody.error;
+        } catch {
+          // Keep the HTTP status when the proxy does not return JSON.
+        }
+        throw new Error(details);
       }
 
       const events = await response.json();
@@ -267,7 +277,7 @@ export default function Home() {
       const errorMessage: Message = {
         id: `error-${Date.now()}`,
         role: 'assistant',
-        content: `Error: Failed to communicate with ADK server. Please ensure the server is running on http://localhost:8000`,
+        content: `Error: ${error instanceof Error ? error.message : 'Unknown error'}`,
         timestamp: new Date(),
       };
 
